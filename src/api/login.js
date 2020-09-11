@@ -1,10 +1,30 @@
 import request from '@/utils/request'
+import { getToken } from '@/utils/auth'
 
-export function login(params) {
+var Authorization = 'BASIC ' + btoa('mall-admin:secret')
+
+export function login(data, params) {
   return request({
-    url: '/login',
+    url: '/auth/oauth/token',
     method: 'post',
-    params
+    headers: {
+      Authorization: Authorization
+    },
+    data: data,
+    params: params
+  })
+}
+
+export function getInfo() {
+  return request({
+    url: '/auth/oauth/check_token',
+    method: 'get',
+    params: {
+      token: getToken()
+    },
+    headers: {
+      Authorization: Authorization
+    }
   })
 }
 
@@ -13,13 +33,6 @@ export function loginPhone(params) {
     url: '/login/phone',
     method: 'post',
     params
-  })
-}
-
-export function getInfo() {
-  return request({
-    url: '/upms/user_info',
-    method: 'get'
   })
 }
 
@@ -60,6 +73,14 @@ export function updateUser(data) {
 }
 
 export function resetPassword(data) {
+  return request({
+    url: `/upms/user_password`,
+    method: 'put',
+    data
+  })
+}
+
+export function getSms(data) {
   return request({
     url: `/upms/user_password`,
     method: 'put',

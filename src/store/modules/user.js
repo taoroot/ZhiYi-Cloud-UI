@@ -35,10 +35,19 @@ const actions = {
       console.log(loginType)
       // 手机号登录
       if (loginType) {
-        login({ username: username.trim(), password: password, imageKey: imageKey, imageCode: code }).then(response => {
-          const { data } = response
-          commit('SET_TOKEN', data)
-          setToken(data)
+        var data = new FormData()
+        data.append('username', username.trim())
+        data.append('password', password)
+        data.append('grant_type', 'password')
+        var params = {
+          imageKey: imageKey,
+          imageCode: code
+        }
+        login(data, params).then(response => {
+          console.log(response)
+          const { access_token, refresh_token } = response
+          commit('SET_TOKEN', access_token)
+          setToken(access_token)
           resolve()
         }).catch(error => {
           reject(error)
@@ -60,17 +69,11 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
-        const { data } = response
+        const { nickname, avatar } = response
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
-
-        const { username, avatar } = data.info
-
-        commit('SET_NAME', username)
+        commit('SET_NAME', nickname || '匿名用户')
         commit('SET_AVATAR', avatar)
-        resolve(data)
+        resolve(response)
       }).catch(error => {
         reject(error)
       })

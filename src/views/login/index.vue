@@ -120,8 +120,8 @@ export default {
     // }
     return {
       loginForm: {
-        username: 'admin',
-        password: '123456',
+        username: 'user',
+        password: 'password',
         imageKey: Math.random().toString(36).substr(2),
         code: '',
         phone: '',

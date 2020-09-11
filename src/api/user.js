@@ -62,3 +62,17 @@ export function changeUserStatus(id, enabled) {
     data: data
   })
 }
+
+export function updateUserPwd(userId) {
+  return request({
+    url: `/upms/user/${userId}/authorities`,
+    method: 'get'
+  })
+}
+
+export function uploadAvatar(userId) {
+  return request({
+    url: `/upms/user/${userId}/authorities`,
+    method: 'get'
+  })
+}
